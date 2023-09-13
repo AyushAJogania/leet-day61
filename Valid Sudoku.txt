@@ -1,0 +1,44 @@
+#include <vector>
+#include <unordered_set>
+
+class Solution {
+public:
+    bool isValidSudoku(std::vector<std::vector<char>>& board) {
+        // Create sets to store seen values in rows, columns, and sub-grids.
+        std::unordered_set<char> rows[9];
+        std::unordered_set<char> columns[9];
+        std::unordered_set<char> subgrids[9];
+
+        for (int i = 0; i < 9; ++i) {
+            for (int j = 0; j < 9; ++j) {
+                char currentChar = board[i][j];
+
+                // Skip empty cells.
+                if (currentChar == '.') {
+                    continue;
+                }
+
+                // Check row.
+                if (rows[i].count(currentChar) > 0) {
+                    return false;
+                }
+                rows[i].insert(currentChar);
+
+                // Check column.
+                if (columns[j].count(currentChar) > 0) {
+                    return false;
+                }
+                columns[j].insert(currentChar);
+
+                // Check sub-grid.
+                int subgridIdx = (i / 3) * 3 + (j / 3);
+                if (subgrids[subgridIdx].count(currentChar) > 0) {
+                    return false;
+                }
+                subgrids[subgridIdx].insert(currentChar);
+            }
+        }
+
+        return true;
+    }
+};
